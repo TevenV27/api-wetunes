@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cors({
     origin: (origin, callback) => {
       const ACCEPTED_ORIGINS = [
-        'http://localhost:3000',
+        'http://localhost:5173',
         'https://wetunes.vercel.app',
       ]
   
