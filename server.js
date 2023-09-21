@@ -16,6 +16,26 @@ const PORT = process.env.PORT ?? 8080;
 
 app.use(express.json());
 
+// Settings CORS
+app.use(cors({
+    origin: (origin, callback) => {
+      const ACCEPTED_ORIGINS = [
+        'http://localhost:3000',
+        'https://wetunes.vercel.app',
+      ]
+  
+      if (ACCEPTED_ORIGINS.includes(origin)) {
+        return callback(null, true);
+      }
+  
+      if (!origin) {
+        return callback(null, true);
+      }
+  
+      return callback(new Error('Not allowed by CORS'));
+    }
+  }));
+
 // Conectar a la base de datos
 connect();
 
