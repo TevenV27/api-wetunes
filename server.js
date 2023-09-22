@@ -5,7 +5,7 @@ import path from 'path';
 import { connect } from './src/utils/db.js';
 import registerRoutes from './src/routes/registerRoutes.js';
 import loginRoutes from './src/routes/loginRoutes.js';
-import 'cors' from 'cors';   
+import cors from 'cors';   
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
