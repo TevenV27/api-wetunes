@@ -2,36 +2,37 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+
 export const login = async (req, res) => {
-    const { email, password } = req.body; 
-    const secret = process.env.JWT_SECRET;
-    console.log("Datos recibidos:", req.body);
+
+    const jwtSecret = process.env.JWT_SECRET;
     try {
-        const user = await User.findOne({ email }); 
-        console.log("Usuario encontrado:", user);
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
+            return res.status(400).json({ error: 'Usuario no encontrado' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
 
-        console.log("Las contraseñas coinciden:", isMatch);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Contraseña incorrecta' });
+            return res.status(400).json({ error: 'Contraseña incorrecta' });
         }
 
-        const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
 
-        res.status(200).json({ token, email: user.email }); 
+        res.status(200).json({ token, email: user.email });
     } catch (error) {
-        console.log("Error en el proceso de login:", error);
-        res.status(500).json({ message: 'Error del servidor' });
+        console.error("Error en el proceso de login:", error);
+        res.status(500).json({ error: 'Error del servidor' });
     }
 };
 
 export const register = async (req, res) => {
     console.log('Iniciando función de registro');
-    
+
     const { firstname, lastname, email, password } = req.body;
     const secret = process.env.JWT_SECRET;
 
