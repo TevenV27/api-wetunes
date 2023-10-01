@@ -1,7 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import { sendConfirmationEmail } from '../utils/emailService.js';
 
 export const login = async (req, res) => {
 
@@ -60,6 +60,9 @@ export const register = async (req, res) => {
         // // Generar un token para el nuevo usuario
         const token = jwt.sign({ id: newUser._id }, secret, { expiresIn: '1h' });
 
+        // Enviar correo de confirmación
+        await sendConfirmationEmail(newUser.email, newUser.firstname);
+        
         res.status(201).json({ token, email: newUser.email });
     } catch (error) {
         console.error("Error en el proceso de registro:", error);
