@@ -69,3 +69,19 @@ export const register = async (req, res) => {
         res.status(500).json({ message: 'Error del servidor' });
     }
 };
+
+export const getUserByEmail = async (req, res) => {
+    try {
+        const userEmail = req.params.email; // Asumiendo que el parámetro en la URL se llama 'email'
+        const user = await User.findOne({ email: userEmail });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error en el proceso de obtener usuario por email:", error);
+        res.status(500).json({ message: 'Error del servidor' });
+    }
+}

@@ -5,6 +5,7 @@ import path from 'path';
 import { connect } from './src/utils/db.js';
 import registerRoutes from './src/routes/registerRoutes.js';
 import loginRoutes from './src/routes/loginRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 import cors from 'cors';   
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +48,7 @@ app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
-
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
