@@ -18,13 +18,19 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: {
+            validator: function (value) {
+                // Utiliza una expresión regular para validar el formato del correo electrónico
+                return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
+            },
+            message: 'El correo electrónico debe ser válido.',
+        },
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
-    
 });
 
 const User = mongoose.model('User', userSchema);

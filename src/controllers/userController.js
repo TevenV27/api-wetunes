@@ -7,9 +7,11 @@ export const login = async (req, res) => {
 
     const jwtSecret = process.env.JWT_SECRET;
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        // Convierte el email a minúsculas
+        email = email.toLowerCase();
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne( {email} );
 
         if (!user) {
             return res.status(400).json({ error: 'Usuario no encontrado' });
@@ -23,7 +25,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '7d' });
 
-        res.status(200).json({ token, email: user.email, firstname: user.firstname, lastname: user.lastname, avataruser: user.avataruser, role: user.role});
+        res.status(200).json({ token, email: user.email, firstname: user.firstname, lastname: user.lastname, avataruser: user.avataruser, role: user.role });
     } catch (error) {
         console.error("Error en el proceso de login:", error);
         res.status(500).json({ error: 'Error del servidor' });
@@ -47,11 +49,18 @@ export const register = async (req, res) => {
         // Si el usuario no existe, hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Convertir firstname y lastname a la primera letra mayúscula y el resto en minúsculas
+        const formattedFirstname = firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
+        const formattedLastname = lastname.charAt(0).toUpperCase() + lastname.slice(1).toLowerCase();
+
+        // Convertir el email a minúsculas
+        const formattedEmail = email.toLowerCase();
+
         // Crear un nuevo usuario en la base de datos
         const newUser = new User({
-            firstname,
-            lastname,
-            email,
+            firstname: formattedFirstname,
+            lastname: formattedLastname,
+            email: formattedEmail,
             password: hashedPassword,
         });
 
@@ -62,8 +71,8 @@ export const register = async (req, res) => {
 
         // Enviar correo de confirmación
         await sendConfirmationEmail(newUser.email, newUser.firstname);
-        
-        res.status(200).json({ token, email: user.email, firstname: user.firstname, lastname: user.lastname, avataruser: user.avataruser, role: user.role});
+
+        res.status(200).json({ token, email: newUser.email, firstname: newUser.firstname, lastname: newUser.lastname, avataruser: newUser.avataruser, role: newUser.role });
     } catch (error) {
         console.error("Error en el proceso de registro:", error);
         res.status(500).json({ message: 'Error del servidor' });
