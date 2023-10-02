@@ -23,7 +23,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '7d' });
 
-        res.status(200).json({ token, email: user.email });
+        res.status(200).json({ token, email: user.email, firstname: user.firstname, lastname: user.lastname, avataruser: user.avataruser, role: user.role});
     } catch (error) {
         console.error("Error en el proceso de login:", error);
         res.status(500).json({ error: 'Error del servidor' });
