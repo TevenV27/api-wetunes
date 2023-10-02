@@ -71,7 +71,7 @@ async function sendConfirmationEmail(userEmail, userName) {
                 <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.</p>
                 <p>¡Esperamos que tengas una gran experiencia con nosotros!</p>
                 <p>
-                    <a href="https://wetunes.vercel.app/" class="button">Iniciar sesión</a>
+                    <a href="https://wetunes.vercel.app/" class="button">Confirmar registro</a>
                 </p>
             </div>
         </body>

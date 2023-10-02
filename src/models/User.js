@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "user",
     },
+    confirmAccount: {
+        type: Boolean,
+        default: false,
+    },
+    typeAccount: {
+        type: String,
+        default: "freemium",
+    },
+    creationDate: {
+        type: Date,
+        default: Date.now,
+    },
     email: {
         type: String,
         required: true,
